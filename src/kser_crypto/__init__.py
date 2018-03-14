@@ -33,7 +33,7 @@ class CryptoMessage(Schema):
                     nonce, base64.b64decode(secretbox_key)
                 )
             ).strip()
-        )).data
+        ))
 
     @classmethod
     def decode(cls, jdata, secretbox_key):
@@ -43,7 +43,7 @@ class CryptoMessage(Schema):
         :param str secretbox_key: Secrebox Key
         :return: the Encoded message
         """
-        ckmsg = cls().loads(jdata).data
+        ckmsg = cls().loads(jdata)
         return Message.loads(
             csodium.crypto_secretbox_open(
                 base64.b64decode(ckmsg["data"]),
