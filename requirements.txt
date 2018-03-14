@@ -1,2 +1,2 @@
-kser
+kser>=0.6
 csodium==0.0.3
