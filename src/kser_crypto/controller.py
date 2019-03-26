@@ -29,9 +29,8 @@ class CryptoController(Controller):
             kmsg = cls._onmessage(cls.TRANSPORT.loads(raw_data))
         except Exception as exc:
             logger.error(
-                "{}.ImportError: Failed to load data from kafka: {}".format(
-                    cls.__name__, exc
-                ),
+                "{}.ImportError: Failed to load data from kafka: {} "
+                "<- {}".format(cls.__name__, exc, raw_data),
                 extra=dict(kafka_raw_data=raw_data)
             )
             return Result.from_exception(exc)
