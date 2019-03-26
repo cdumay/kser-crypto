@@ -20,6 +20,10 @@ class CryptoSchema(Schema):
     data = fields.String(required=True)
     nonce = fields.String(required=True)
 
+    @property
+    def secretbox_key(self):
+        return os.getenv("KSER_SECRETBOX_KEY", None)
+
     def encode(self, kmsg):
         """ Encode message using libsodium
 
@@ -32,7 +36,7 @@ class CryptoSchema(Schema):
             data=base64.encodebytes(
                 csodium.crypto_secretbox(
                     bytes(kmsg.MARSHMALLOW_SCHEMA.dumps(kmsg), 'utf-8'),
-                    nonce, base64.b64decode(self.context['secretbox_key'])
+                    nonce, base64.b64decode(self.secretbox_key)
                 )
             ).strip()
         ))
@@ -48,15 +52,13 @@ class CryptoSchema(Schema):
             csodium.crypto_secretbox_open(
                 base64.b64decode(ckmsg["data"]),
                 base64.b64decode(ckmsg["nonce"]),
-                base64.b64decode(self.context['secretbox_key'])
+                base64.b64decode(self.secretbox_key)
             ).decode('utf-8')
         )
 
 
 class CryptoMessage(Message):
-    MARSHMALLOW_SCHEMA = CryptoSchema(
-        context=dict(secretbox_key=os.getenv("KSER_SECRETBOX_KEY", None))
-    )
+    MARSHMALLOW_SCHEMA = CryptoSchema()
 
     @classmethod
     def loads(cls, json_data):
