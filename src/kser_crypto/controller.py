@@ -8,7 +8,7 @@
 """
 import logging
 
-from cdumay_error import ValidationError
+from cdumay_error import ValidationError, from_exc
 from cdumay_result import Result
 from kser.controller import Controller
 from kser_crypto.schemas import CryptoMessage
@@ -28,12 +28,13 @@ class CryptoController(Controller):
         try:
             kmsg = cls._onmessage(cls.TRANSPORT.loads(raw_data))
         except Exception as exc:
+            error = from_exc(exc)
             logger.error(
                 "{}.ImportError: Failed to load data from kafka: {} "
                 "<- {}".format(cls.__name__, exc, raw_data),
-                extra=dict(kafka_raw_data=raw_data)
+                extra=dict(kafka_raw_data=raw_data, error=error.to_dict())
             )
-            return Result.from_exception(exc)
+            return Result.from_error(error)
 
         try:
             cls.start_processing(kmsg)
