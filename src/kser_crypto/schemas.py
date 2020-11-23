@@ -8,7 +8,7 @@
 """
 import base64
 import os
-import csodium
+import pysodium
 import marshmallow
 
 from cdumay_error import ValidationError
@@ -30,11 +30,11 @@ class CryptoSchema(Schema):
         :param kser.schemas.Message kmsg: Kafka message
         :return: the Encoded message
         """
-        nonce = csodium.randombytes(csodium.crypto_box_NONCEBYTES)
+        nonce = pysodium.randombytes(pysodium.crypto_box_NONCEBYTES)
         return self.dumps(dict(
             nonce=base64.encodebytes(nonce).strip(),
             data=base64.encodebytes(
-                csodium.crypto_secretbox(
+                pysodium.crypto_secretbox(
                     bytes(kmsg.MARSHMALLOW_SCHEMA.dumps(kmsg), 'utf-8'),
                     nonce, base64.b64decode(self.secretbox_key)
                 )
@@ -49,7 +49,7 @@ class CryptoSchema(Schema):
         """
         ckmsg = self.loads(jdata)
         return Message.loads(
-            csodium.crypto_secretbox_open(
+            pysodium.crypto_secretbox_open(
                 base64.b64decode(ckmsg["data"]),
                 base64.b64decode(ckmsg["nonce"]),
                 base64.b64decode(self.secretbox_key)
