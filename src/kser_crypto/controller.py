@@ -8,7 +8,8 @@
 """
 import logging
 
-from cdumay_error import ValidationError, from_exc
+from cdumay_error import from_exc
+from cdumay_error.types import ValidationError
 from cdumay_result import Result
 from kser.controller import Controller
 from kser_crypto.schemas import CryptoMessage

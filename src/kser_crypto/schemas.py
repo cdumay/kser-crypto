@@ -11,7 +11,7 @@ import os
 import pysodium
 import marshmallow
 
-from cdumay_error import ValidationError
+from cdumay_error.types import ValidationError
 from marshmallow import Schema, fields
 from kser.schemas import Message
 
