@@ -15,7 +15,7 @@ from kser_crypto.schemas import CryptoSchema
 
 class CryptoProducer(Producer):
     # noinspection PyUnusedLocal
-    def send(self, topic, kmsg, timeout=60):
+    def _send(self, topic, kmsg, timeout=60):
         result = Result(uuid=kmsg.uuid)
         try:
             self.client.send(topic, CryptoSchema(context=dict(
