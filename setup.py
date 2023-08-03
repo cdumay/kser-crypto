@@ -25,6 +25,13 @@ setup(
     install_requires=open('requirements.txt', 'r').read().strip(),
     extras_require={
         'pykafka': ['kafka-python'],
+        "tests": [
+            "flake8",
+            "flake8-html",
+            "pytest",
+            "pytest-cov",
+            "pytest-html",
+        ]
     },
     entry_points="""
 """,

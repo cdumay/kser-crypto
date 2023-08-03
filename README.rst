@@ -14,6 +14,18 @@
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: https://github.com/cdumay/kser-crypto/blob/master/LICENSE
 
+.. image:: https://github.com/cdumay/kser-crypto/blob/reports/junit/tests-badge.svg?raw=true
+   :target: https://htmlpreview.github.io/?https://github.com/cdumay/kser-crypto/blob/reports/junit/report.html
+   :alt: Tests
+
+.. image:: https://github.com/cdumay/kser-crypto/blob/reports/flake8/flake8-badge.svg?raw=true
+   :target: https://htmlpreview.github.io/?https://github.com/cdumay/kser-crypto/blob/reports/flake8/index.html
+   :alt: Lint
+
+.. image:: https://github.com/cdumay/kser-crypto/blob/reports/coverage/coverage-badge.svg?raw=true
+   :target: https://htmlpreview.github.io/?https://github.com/cdumay/kser-crypto/blob/reports/coverage/html/index.html
+   :alt: Coverage badge
+
 ***********
 kser-crypto
 ***********

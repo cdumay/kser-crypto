@@ -3,6 +3,5 @@
 /dist/
 /.eggs/
 __pycache__
-/tests/
 .jira-release.yml
 .changelog.json
