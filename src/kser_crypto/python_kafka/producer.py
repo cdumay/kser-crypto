@@ -14,12 +14,16 @@ from kser_crypto.schemas import CryptoSchema
 
 
 class CryptoProducer(Producer):
+    @property
+    def secretbox_key(self):
+        return os.getenv("KSER_SECRETBOX_KEY", None)
+
     # noinspection PyUnusedLocal
     def _send(self, topic, kmsg, timeout=60):
         result = Result(uuid=kmsg.uuid)
         try:
             self.client.send(topic, CryptoSchema(context=dict(
-                secretbox_key=os.getenv("KSER_SECRETBOX_KEY", None)
+                secretbox_key=self.secretbox_key
             )).encode(self._onmessage(kmsg)).encode("UTF-8"))
 
             result.stdout = "Message {}[{}] sent in {}".format(
