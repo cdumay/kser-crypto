@@ -8,11 +8,12 @@
 """
 import base64
 import os
-import pysodium
+
 import marshmallow
+import pysodium
+from marshmallow import Schema, fields
 
 from cdumay_error.types import ValidationError
-from marshmallow import Schema, fields
 from kser.schemas import Message
 
 
@@ -22,7 +23,10 @@ class CryptoSchema(Schema):
 
     @property
     def secretbox_key(self):
-        return os.getenv("KSER_SECRETBOX_KEY", None)
+        return self.context.get(
+            "secretbox_key",
+            os.getenv("KSER_SECRETBOX_KEY", None)
+        )
 
     def encode(self, kmsg):
         """ Encode message using libsodium
