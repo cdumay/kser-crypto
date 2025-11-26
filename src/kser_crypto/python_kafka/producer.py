@@ -14,20 +14,27 @@ from kser_crypto.schemas import CryptoSchema
 
 
 class CryptoProducer(Producer):
+    """Kafka producer"""
+
     @property
     def secretbox_key(self):
+        """Secret box key"""
         return os.getenv("KSER_SECRETBOX_KEY", None)
 
     # noinspection PyUnusedLocal
     def _send(self, topic, kmsg, timeout=60):
+        """Send message to topic"""
         result = Result(uuid=kmsg.uuid)
         try:
-            self.client.send(topic, CryptoSchema(context=dict(
-                secretbox_key=self.secretbox_key
-            )).encode(self._onmessage(kmsg)).encode("UTF-8"))
+            self.client.send(
+                topic,
+                CryptoSchema(context={"secretbox_key": self.secretbox_key})
+                .encode(self._onmessage(kmsg))
+                .encode("UTF-8"),
+            )
 
-            result.stdout = "Message {}[{}] sent in {}".format(
-                kmsg.entrypoint, kmsg.uuid, topic
+            result.stdout = (
+                f"Message {kmsg.entrypoint}[{kmsg.uuid}] " f"sent in {topic}"
             )
             self.client.flush()
 
@@ -37,5 +44,4 @@ class CryptoProducer(Producer):
         finally:
             if result.retcode < 300:
                 return self._onsuccess(kmsg=kmsg, result=result)
-            else:
-                return self._onerror(kmsg=kmsg, result=result)
+            return self._onerror(kmsg=kmsg, result=result)

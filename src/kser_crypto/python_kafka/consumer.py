@@ -11,4 +11,6 @@ from kser_crypto.controller import CryptoController
 
 
 class CryptoConsumer(Consumer):
+    """Kafka consumer"""
+
     REGISTRY = CryptoController
